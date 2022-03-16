@@ -20,7 +20,7 @@ class UserServiceTest {
         MockEmailService emailService=new MockEmailService();
         DummyUserRepository dummyUserRepository=new DummyUserRepository();
         UserService userService = new UserService(dummyUserRepository,emailService);
-        userService.sendWelcomeEmail("hello@gmail.com");
+        userService.sendRegisteredPhoneNumber("hello@gmail.com");
         EmailBody expectedEmail = new EmailBody("Account Details",
                 "Here is your Registered Phone Number: \n" + "9373940583",
                 "hello@gmail.com");
