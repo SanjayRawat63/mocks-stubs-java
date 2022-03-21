@@ -8,11 +8,11 @@ class UserServiceTest {
 
     @Test
     void shouldSendWelcomeEmail() {
-        MockEmailService emailService = new MockEmailService();
+        EmailService emailService = mock(EmailService.class);
         UserService userService = new UserService(null, emailService);
         userService.sendWelcomeEmail("hello@gmail.com");
         EmailBody expectedEmail = new EmailBody("Welcome", "Welcome to the portal", "hello@gmail.com");
-        emailService.verify(expectedEmail);
+        verify(emailService).send(expectedEmail);
     }
 
     @Test
