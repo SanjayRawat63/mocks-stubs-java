@@ -33,13 +33,14 @@ class UserServiceTest {
 
     @Test
     void sendAccountNotFoundEmailForUnregisteredUsersWhenTryingToGetRegisteredPhoneNumber() throws NotFoundException {
-        MockEmailService emailService = new MockEmailService();
-        StubUserRepository userRepository = new StubUserRepository();
+        EmailService emailService = mock(EmailService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        Mockito.when(userRepository.findByEmail("world@gmail.com")).thenThrow(new NotFoundException());
         UserService userService = new UserService(userRepository, emailService);
         userService.sendRegisteredPhoneNumber("world@gmail.com");
         EmailBody expectedEmail = new EmailBody("Account Not Found",
                 "We do not have a registered account matching your email address",
                 "world@gmail.com");
-        emailService.verify(expectedEmail);
+        verify(emailService).send(expectedEmail);
     }
 }
