@@ -1,6 +1,7 @@
 package co.interleap.mocks;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
@@ -17,14 +18,15 @@ class UserServiceTest {
 
     @Test
     void shouldSendRegisteredPhoneNumberIfUserAccountExists() throws NotFoundException {
-        MockEmailService emailService = new MockEmailService();
-        StubUserRepository userRepository = new StubUserRepository();
+        EmailService emailService = mock(EmailService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        Mockito.when(userRepository.findByEmail("hello@gmail.com")).thenReturn(new User("9373940583", "hello@gmail.com", "sanju"));
         UserService userService = new UserService(userRepository, emailService);
         userService.sendRegisteredPhoneNumber("hello@gmail.com");
         EmailBody expectedEmail = new EmailBody("Account Details",
                 "Here is your Registered Phone Number: \n" + "9373940583",
                 "hello@gmail.com");
-        emailService.verify(expectedEmail);
+        verify(emailService).send(expectedEmail);
 
 
     }
